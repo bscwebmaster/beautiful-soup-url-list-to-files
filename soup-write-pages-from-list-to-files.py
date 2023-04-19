@@ -7,36 +7,45 @@ myurls = open('url-list.txt').read().splitlines()
 # loop through that list
 for myurl in myurls:
     # first get the url
-    r = requests.get(myurl)
+    R = requests.get(myurl)
     # split the url into bits
-    mypath = myurl.split(os.sep)
+    MYPATH = myurl.split(os.sep)
     # delete https: and domain
-    del mypath[0]
-    del mypath[1]
+    del MYPATH[0]
+    del MYPATH[1]
     # concatenate filename
-    myfn = 'bsc.coop' + '_'.join(mypath) + ".html"
+    MYFN = 'bsc.coop' + '_'.join(MYPATH) + ".html"
     # make soup
-    soup = BeautifulSoup(r.content, features="html5lib")
+    soup = BeautifulSoup(R.content, features="html5lib")
     # delete specific tags and their contents
-    for a in soup.find_all("a",string="Skip to main content"):
-        a.string = ""
     for script in soup("script"):
         script.decompose()
     for noscript in soup("noscript"):
         noscript.decompose()
-    for head in soup("head"):
-        head.clear()
-    nav1 = soup.find("div", {"id": "top-navigation"})
-    nav1.decompose()
-    navbarheader = soup.find("div", {"class": "navbar-header"})
-    navbarheader.decompose()
-    banner = soup.find("div", {"class": "container banner"})
-    banner.decompose()
+    # empty head tag
+    # put charset back
+    a_tag = (soup.head)
+    a_tag.clear()
+    new_tag = soup.new_tag("meta", charset="utf-8")
+    a_tag.insert(1, new_tag)
+    # delete some stuff
+    DELETE_TAGS = []
+    DELETE_TAGS = [
+            ("a", "class", "skip-link"),
+            ("div", "id", "top-navigation"),
+            ("div", "class", "container banner"),
+            ]
+    for DELETE_TAG in DELETE_TAGS:
+        MYTAG = soup.find(DELETE_TAG[0], {DELETE_TAG[1]: DELETE_TAG[2]})
+        MYTAG.decompose()
     soup.header.decompose()
     soup.aside.decompose()
     soup.footer.decompose()
-    for e in soup.find_all(True):
-        e.attrs = {}
-    f = open(myfn, "w")
+    # remove the prefix and other attributes
+    REMOVE_ATTRIBUTES = ['prefix', 'data-off-canvas-main-canvas', 'role', 'property', 'data-history-node-id', 'typeof', 'valign', 'data-drupal-messages-fallback']
+    for attribute in REMOVE_ATTRIBUTES:
+        for tag in soup.findAll():
+            del(tag[attribute])
+    f = open(MYFN, "w")
     f.write(soup.prettify())
     f.close
