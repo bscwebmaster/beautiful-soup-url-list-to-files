@@ -1,4 +1,5 @@
 import sys
+import re
 import os.path
 import requests
 from bs4 import BeautifulSoup
@@ -46,6 +47,19 @@ for myurl in myurls:
     for attribute in REMOVE_ATTRIBUTES:
         for tag in soup.findAll():
             del(tag[attribute])
+    # unwrap span tags (make them go away)
+    for SPAN in soup.find_all('span'):
+        SPAN.unwrap()
+    # play an accordian, go to jail
+    THETAGS = []
+    THETAGS = ["div", "a"]
+    THEATTBS = []
+    THEATTBS = ["class", "id", "aria-controls"]
+    for THETAG in THETAGS:
+        for THEATTB in THEATTBS:
+            for ACCTAG in soup.find_all(THETAG, {THEATTB: re.compile(".*accordion.*")}):
+                ACCTAG.unwrap()
+    soup.smooth()
     f = open(MYFN, "w")
     f.write(soup.prettify())
     f.close

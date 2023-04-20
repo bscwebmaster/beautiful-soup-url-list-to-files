@@ -37,10 +37,26 @@ soup.footer.decompose()
 REMOVE_ATTRIBUTES = []
 REMOVE_ATTRIBUTES = ['prefix', 'data-off-canvas-main-canvas', 'role', 'property', 'data-history-node-id', 'typeof', 'valign', 'data-drupal-messages-fallback']
 for attribute in REMOVE_ATTRIBUTES:
-    for tag in soup.findAll():
+    for tag in soup.find_all():
         del(tag[attribute])
-
-# print(a_tag)
+# unwrap span tags (make them go away)
+for SPAN in soup.find_all('span'):
+    SPAN.unwrap()
+# play an accordian, go to jail
+# first delete all tags with "accordion" in them
+THETAGS = []
+THETAGS = ["div", "a"]
+THEATTBS = []
+THEATTBS = ["class", "id", "aria-controls"]
+for THETAG in THETAGS:
+    for THEATTB in THEATTBS:
+        for ACCTAG in soup.find_all(THETAG, {THEATTB: re.compile(".*accordion.*")}):
+            ACCTAG.unwrap()
+# modify all "panel-title" tags
+PTTAGS = soup.find_all("div", "panel-title")
+NEWTAG = soup.new_tag("h2")
+for PTTAG in PTTAGS:
+    PTTAG.replace_with(NEWTAG)
 
 print(soup.prettify())
 # print(soup.a)
