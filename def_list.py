@@ -1,5 +1,5 @@
-# play an accordion, go to jail
 import re
+# play an accordion, go to jail
 # convert accordions to definition lists
 # first delete all tags with "accordion" in them
 def accoconv(soup):
@@ -11,11 +11,10 @@ def accoconv(soup):
         for THEATTB in THEATTBS:
             for ACCTAG in soup.find_all(THETAG, {THEATTB: re.compile(".*accordion.*")}):
                 ACCTAG.unwrap()
-    # modify all "panel-title" tags
+    # change all "panel-title" tags to h2 tags
     PTTAGS = soup.find_all("div", "panel-title")
-    NEWTAG = soup.new_tag("h2")
     for PTTAG in PTTAGS:
-        PTTAG.replace_with(NEWTAG)
+        PTTAG.name = "h2"
 
 def decomposetags(soup):
     # delete script/noscript tags and their contents
@@ -42,8 +41,8 @@ def cleanuptags(soup):
     # put charset back
     a_tag = (soup.head)
     a_tag.clear()
-    new_tag = soup.new_tag("meta", charset="utf-8")
-    a_tag.insert(1, new_tag)
+    m_tag = soup.new_tag("meta", charset="utf-8")
+    a_tag.insert(1, m_tag)
     # remove the prefix and other attributes
     REMOVE_ATTRIBUTES = []
     REMOVE_ATTRIBUTES = ['prefix', 'data-off-canvas-main-canvas', 'role', 'property', 'data-history-node-id', 'typeof', 'valign', 'data-drupal-messages-fallback']
