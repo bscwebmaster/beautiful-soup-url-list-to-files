@@ -11,10 +11,10 @@ def accoconv(soup):
         for THEATTB in THEATTBS:
             for ACCTAG in soup.find_all(THETAG, {THEATTB: re.compile(".*accordion.*")}):
                 ACCTAG.unwrap()
-    # change all "panel-title" tags to h2 tags
-    PTTAGS = soup.find_all("div", "panel-title")
-    for PTTAG in PTTAGS:
-        PTTAG.name = "h2"
+#    # change all "panel-title" tags to h2 tags
+#    PTTAGS = soup.find_all("div", "panel-title")
+#    for PTTAG in PTTAGS:
+#        PTTAG.name = "h2"
 
 def decomposetags(soup):
     # delete script/noscript tags and their contents
