@@ -1,20 +1,36 @@
 import re
 # play an accordion, go to jail
 # convert accordions to definition lists
-# first delete all tags with "accordion" in them
 def accoconv(soup):
-    THETAGS = []
+#   change parent accordion div to dl, give faq-dl class
+    PTTAGS = []
+    PTTAGS = soup.find_all("div", "paragraph--bp-accordion-container")
+    for PTTAG in PTTAGS:
+        PTTAG.name = "dl"
+        PTTAG['class'] = 'faq-dl'
+# delete all tags with "accordion" in them
     THETAGS = ["div", "a"]
-    THEATTBS = []
     THEATTBS = ["class", "id", "aria-controls"]
     for THETAG in THETAGS:
         for THEATTB in THEATTBS:
             for ACCTAG in soup.find_all(THETAG, {THEATTB: re.compile(".*accordion.*")}):
                 ACCTAG.unwrap()
-#    # change all "panel-title" tags to h2 tags
-#    PTTAGS = soup.find_all("div", "panel-title")
-#    for PTTAG in PTTAGS:
-#        PTTAG.name = "h2"
+# delete card panel panel-default div
+    MYTAG = soup.find("div", "card panel panel-default")
+    MYTAG.unwrap()
+# change panel-title divs to question dts
+    PTTAGS = []
+    PTTAGS = soup.find_all("div", "panel-title")
+    for PTTAG in PTTAGS:
+        PTTAG.name = "dt"
+        PTTAG['class'] = 'dl-questions'
+# find next tag
+        NEXTTAGS = PTTAG.find_all("div", "paragraph__column")
+        # ^^^ this didn't work, but didn't error either
+        for NEXTTAG in NEXTTAGS:
+            print(NEXTTAG)
+        #NEXTTAG.name = "dd"
+        #NEXTTAG['class'] = "dl-answers"
 
 def decomposetags(soup):
     # delete script/noscript tags and their contents
@@ -23,7 +39,6 @@ def decomposetags(soup):
     for noscript in soup("noscript"):
         noscript.decompose()
     # delete specific tags
-    DELETE_TAGS = []
     DELETE_TAGS = [
             ("a", "class", "skip-link"),
             ("div", "id", "top-navigation"),
