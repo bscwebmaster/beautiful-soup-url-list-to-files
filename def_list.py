@@ -42,10 +42,10 @@ def accoconv(soup):
         SIB["class"] = "dl-answer"
 
 # blast away the extra div.field tags when they're children of .dl-answer
-    SIBLINGS = []
-    SIBLINGS = soup.css.select(".dl-answer > .field")
-    for SIB in SIBLINGS:
-        SIB.unwrap()
+    CHILDREN = []
+    CHILDREN = soup.css.select(".dl-answer > .field")
+    for CHILD in CHILDREN:
+        CHILD.unwrap()
 
 def decomposetags(soup):
     # delete script/noscript tags and their contents
