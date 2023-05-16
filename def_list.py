@@ -19,7 +19,8 @@ def accoconv(soup):
 
 # delete card panel panel-default div
     MYTAG = soup.find("div", "card panel panel-default")
-    MYTAG.unwrap()
+    if MYTAG is not None:
+        MYTAG.unwrap()
 
 # change panel-title divs to question dts
     PTTAGS = []
