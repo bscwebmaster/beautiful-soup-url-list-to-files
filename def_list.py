@@ -7,7 +7,8 @@ def accoconv(soup):
     PTTAGS = soup.find_all("div", "paragraph--bp-accordion-container")
     for PTTAG in PTTAGS:
         PTTAG.name = "dl"
-        PTTAG['class'] = 'faq-dl'
+        PTTAG["class"] = "faq-dl"
+
 # delete all tags with "accordion" in them
     THETAGS = ["div", "a"]
     THEATTBS = ["class", "id", "aria-controls"]
@@ -15,22 +16,36 @@ def accoconv(soup):
         for THEATTB in THEATTBS:
             for ACCTAG in soup.find_all(THETAG, {THEATTB: re.compile(".*accordion.*")}):
                 ACCTAG.unwrap()
+
 # delete card panel panel-default div
     MYTAG = soup.find("div", "card panel panel-default")
     MYTAG.unwrap()
+
 # change panel-title divs to question dts
     PTTAGS = []
     PTTAGS = soup.find_all("div", "panel-title")
     for PTTAG in PTTAGS:
         PTTAG.name = "dt"
-        PTTAG['class'] = 'dl-questions'
-# find next tag
-        NEXTTAGS = PTTAG.find_all("div", "paragraph__column")
-        # ^^^ this didn't work, but didn't error either
-        for NEXTTAG in NEXTTAGS:
-            print(NEXTTAG)
-        #NEXTTAG.name = "dd"
-        #NEXTTAG['class'] = "dl-answers"
+        PTTAG["class"] = "dl-question"
+
+# blast away the extra paragraph tags when they're siblings of .dl-question
+    SIBLINGS = []
+    SIBLINGS = soup.css.select(".dl-question ~ .paragraph")
+    for SIB in SIBLINGS:
+        SIB.unwrap()
+
+# rename the div.paragraph__column tags when they're siblings of .dl-question
+    SIBLINGS = []
+    SIBLINGS = soup.css.select(".dl-question ~ .paragraph__column")
+    for SIB in SIBLINGS:
+        SIB.name = "dd"
+        SIB["class"] = "dl-answer"
+
+# blast away the extra div.field tags when they're children of .dl-answer
+    SIBLINGS = []
+    SIBLINGS = soup.css.select(".dl-answer > .field")
+    for SIB in SIBLINGS:
+        SIB.unwrap()
 
 def decomposetags(soup):
     # delete script/noscript tags and their contents
@@ -60,10 +75,10 @@ def cleanuptags(soup):
     a_tag.insert(1, m_tag)
     # remove the prefix and other attributes
     REMOVE_ATTRIBUTES = []
-    REMOVE_ATTRIBUTES = ['prefix', 'data-off-canvas-main-canvas', 'role', 'property', 'data-history-node-id', 'typeof', 'valign', 'data-drupal-messages-fallback']
+    REMOVE_ATTRIBUTES = ["prefix", "data-off-canvas-main-canvas", "role", "property", "data-history-node-id", "typeof", "valign", "data-drupal-messages-fallback"]
     for attribute in REMOVE_ATTRIBUTES:
         for tag in soup.find_all():
             del(tag[attribute])
     # unwrap span tags (make them go away)
-    for SPAN in soup.find_all('span'):
+    for SPAN in soup.find_all("span"):
         SPAN.unwrap()
