@@ -71,7 +71,7 @@ def cleanuptags(soup):
     # grab title
     t_tag = (soup.title)
     # empty head tag
-    # put charset back
+    # put charset and title back
     a_tag = (soup.head)
     a_tag.clear()
     m_tag = soup.new_tag("meta", charset="utf-8")
