@@ -68,12 +68,15 @@ def decomposetags(soup):
     soup.footer.decompose()
 
 def cleanuptags(soup):
+    # grab title
+    t_tag = (soup.title)
     # empty head tag
     # put charset back
     a_tag = (soup.head)
     a_tag.clear()
     m_tag = soup.new_tag("meta", charset="utf-8")
     a_tag.insert(1, m_tag)
+    a_tag.insert(2, t_tag)
     # remove the prefix and other attributes
     REMOVE_ATTRIBUTES = []
     REMOVE_ATTRIBUTES = ["prefix", "data-off-canvas-main-canvas", "role", "property", "data-history-node-id", "typeof", "valign", "data-drupal-messages-fallback"]
