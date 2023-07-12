@@ -1,0 +1,4 @@
+This script uses the BeautifulSoup library to scrape the bsc.coop
+website and output flat, semantic HTML files. At this time 
+(2023) bsc.coop is a Drupal 9 CMS using a custom theme based on
+the Bootstrap 3 Sass sub-theme.
