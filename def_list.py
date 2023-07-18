@@ -79,7 +79,20 @@ def cleanuptags(soup):
     a_tag.insert(2, t_tag)
     # remove the prefix and other attributes
     REMOVE_ATTRIBUTES = []
-    REMOVE_ATTRIBUTES = ["prefix", "data-off-canvas-main-canvas", "role", "property", "data-history-node-id", "typeof", "valign", "data-drupal-messages-fallback"]
+    REMOVE_ATTRIBUTES = ["hreflang",
+                         "target",
+                         "rel",
+                         "title",
+                         "loading",
+                         "about",
+                         "prefix",
+                         "data-off-canvas-main-canvas",
+                         "role",
+                         "property",
+                         "data-history-node-id",
+                         "typeof",
+                         "valign",
+                         "data-drupal-messages-fallback"]
     for attribute in REMOVE_ATTRIBUTES:
         for tag in soup.find_all():
             del(tag[attribute])
