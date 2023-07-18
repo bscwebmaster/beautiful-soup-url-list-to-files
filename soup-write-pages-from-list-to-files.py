@@ -20,11 +20,11 @@ for myurl in myurls:
     # make soup
     soup = BeautifulSoup(R.content, features="html5lib")
 
+    accoconv(soup)
+
     decomposetags(soup)
 
     cleanuptags(soup)
-
-    accoconv(soup)
 
     soup.smooth()
     f = open(MYFN, "w")

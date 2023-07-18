@@ -11,11 +11,11 @@ sourcefile = sys.argv[1]
 with open(sourcefile) as fp:
     soup = BeautifulSoup(fp, 'html.parser')
 
+accoconv(soup)
+
 decomposetags(soup)
 
 cleanuptags(soup)
-
-accoconv(soup)
 
 print(soup.prettify())
 # print(soup.a)
