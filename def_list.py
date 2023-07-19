@@ -3,9 +3,8 @@ import re
 # convert accordions to definition lists
 def accoconv(soup):
 #   change parent accordion div to dl, give faq-dl class
-    PTTAGS = []
-    PTTAGS = soup.find_all("div", "paragraph--bp-accordion-container")
-    for PTTAG in PTTAGS:
+    PTTAG = soup.find("div", "paragraph--bp-accordion-container")
+    if PTTAG is not None:
         PTTAG.name = "dl"
         PTTAG["class"] = "faq-dl"
 
@@ -99,3 +98,6 @@ def cleanuptags(soup):
     # unwrap span tags (make them go away)
     for SPAN in soup.find_all("span"):
         SPAN.unwrap()
+    # unwrap all div tags
+    for x in soup.find_all('div'):
+        x.unwrap()
