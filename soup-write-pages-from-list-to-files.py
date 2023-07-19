@@ -20,9 +20,9 @@ for myurl in myurls:
     # make soup
     soup = BeautifulSoup(R.content, features="html5lib")
 
-    accoconv(soup)
-
     decomposetags(soup)
+
+    accoconv(soup)
 
     cleanuptags(soup)
 

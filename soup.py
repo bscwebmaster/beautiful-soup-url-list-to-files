@@ -11,9 +11,9 @@ sourcefile = sys.argv[1]
 with open(sourcefile) as fp:
     soup = BeautifulSoup(fp, 'html.parser')
 
-accoconv(soup)
-
 decomposetags(soup)
+
+accoconv(soup)
 
 cleanuptags(soup)
 
